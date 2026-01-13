@@ -1,34 +1,47 @@
-// Actualizar año copyright
 document.getElementById('year').textContent = new Date().getFullYear();
 
 let labels = [];
+
+// Función para cuando el usuario elige un tamaño del menú desplegable
+function updateFromPresets() {
+    const preset = document.getElementById('labelSize').value;
+    if (preset !== "custom") {
+        const [w, h] = preset.split('x');
+        document.getElementById('customWidth').value = w;
+        document.getElementById('customHeight').value = h;
+    }
+}
 
 function addLabels() {
     const name = document.getElementById('prodName').value;
     const price = document.getElementById('prodPrice').value;
     const ean = document.getElementById('prodEan').value;
-    const size = document.getElementById('labelSize').value;
+    
+    // Obtenemos las medidas directamente de los cuadros de texto
+    const width = document.getElementById('customWidth').value;
+    const height = document.getElementById('customHeight').value;
+    
     const qty = parseInt(document.getElementById('prodQty').value);
 
-    if (!name || !price) {
-        alert("Introduce al menos el nombre y el precio.");
+    if (!name || !price || !width || !height) {
+        alert("Por favor, rellena Nombre, Precio y las Medidas.");
         return;
     }
 
-    // Añadir tantas veces como indique la cantidad
     for (let i = 0; i < qty; i++) {
         labels.push({
             id: Date.now() + Math.random(),
             name,
             price,
             ean: ean.trim(),
-            size
+            width: width,
+            height: height
         });
     }
 
     renderLabels();
 
-    // Limpiar formulario
+    // Limpiar campos básicos
     document.getElementById('prodName').value = "";
     document.getElementById('prodPrice').value = "";
     document.getElementById('prodEan').value = "";
@@ -41,7 +54,7 @@ function removeLabel(id) {
 }
 
 function clearSheet() {
-    if (confirm("¿Seguro que quieres borrar todas las etiquetas?")) {
+    if (confirm("¿Seguro que quieres borrar todas las etiquetas de la hoja?")) {
         labels = [];
         renderLabels();
     }
@@ -52,18 +65,19 @@ function renderLabels() {
     container.innerHTML = "";
 
     labels.forEach(item => {
-        const [w, h] = item.size.split('x');
         const hasEan = item.ean !== "";
         
         const labelDiv = document.createElement('div');
         labelDiv.className = `label-item ${hasEan ? '' : 'no-ean'}`;
-        labelDiv.style.width = w + "mm";
-        labelDiv.style.height = h + "mm";
+        
+        // Aplicamos la medida personalizada que guardamos
+        labelDiv.style.width = item.width + "mm";
+        labelDiv.style.height = item.height + "mm";
         labelDiv.onclick = () => removeLabel(item.id);
 
         labelDiv.innerHTML = `
             <div class="label-header">
-                <img src="alisan.jpeg" class="label-logo" onerror="this.style.display='none'">
+                <img src="alisan.jpg" class="label-logo" onerror="this.style.display='none'">
                 <p class="label-price">${parseFloat(item.price).toFixed(2)}€</p>
             </div>
             <div class="label-name">${item.name}</div>
