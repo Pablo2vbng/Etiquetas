@@ -1,0 +1,177 @@
+:root {
+    --bg-app: #f4f4f9;
+    --sidebar: #ffffff;
+    --primary: #2c3e50;
+    --accent: #27ae60; /* Verde para el precio y acciones */
+    --danger: #e74c3c;
+    --border: #dcdde1;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    background-color: var(--bg-app);
+}
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 400px;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.brand { text-align: center; margin-bottom: 25px; }
+.main-logo { max-width: 100px; margin-bottom: 10px; }
+.brand h1 { font-size: 1.8rem; margin: 0; color: var(--primary); }
+
+.input-group { margin-bottom: 15px; }
+.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+label { display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px; }
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.btn-add {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+/* BOTONES GRANDES */
+.btn-print-large {
+    width: 100%;
+    padding: 20px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+}
+
+.btn-clear-large {
+    width: 100%;
+    padding: 12px;
+    background: #fff;
+    color: var(--danger);
+    border: 2px solid var(--danger);
+    border-radius: 10px;
+    font-size: 1rem;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+/* VISTA PREVIA */
+.preview-area {
+    margin-left: 400px;
+    flex-grow: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.a4-page {
+    background: white;
+    width: 210mm;
+    min-height: 297mm;
+    padding: 10mm;
+    box-shadow: 0 0 40px rgba(0,0,0,0.1);
+}
+
+.print-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1mm; /* Espacio mínimo entre etiquetas */
+}
+
+/* LA ETIQUETA */
+.label-item {
+    border: 0.1mm solid #eee;
+    padding: 3mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    overflow: hidden;
+    background: white;
+}
+
+.label-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label-logo { height: 8mm; object-fit: contain; }
+
+.label-price {
+    font-size: 18pt;
+    font-weight: 900;
+    color: var(--accent); /* PRECIO EN VERDE */
+    margin: 0;
+}
+
+.label-name {
+    font-size: 11pt;
+    font-weight: 700;
+    margin: 2mm 0;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.barcode-container {
+    text-align: center;
+    margin-top: auto;
+}
+
+.barcode-container svg {
+    max-width: 100%;
+    height: auto !important;
+}
+
+/* Si NO hay código de barras, expandimos el nombre */
+.no-ean .label-name {
+    font-size: 14pt;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+footer { margin-top: auto; padding-top: 20px; font-size: 0.8rem; color: #7f8c8d; text-align: center; }
+
+/* AJUSTES DE IMPRESIÓN */
+@media print {
+    .no-print { display: none !important; }
+    body { background: white; }
+    .preview-area { margin: 0; padding: 0; }
+    .a4-page { box-shadow: none; width: 210mm; margin: 0; padding: 10mm; }
+    .label-item { border: 0.1mm solid #ddd; } /* Guía de corte suave */
+    @page { size: A4; margin: 0; }
+}
