@@ -10,17 +10,17 @@
 <body>
 
 <div class="app-container">
-    <!-- Panel Izquierdo: Formulario (Se oculta al imprimir) -->
+    <!-- Panel Izquierdo (No se imprime) -->
     <aside class="sidebar no-print">
         <div class="brand">
-            <img src="alisan.jpg" alt="Logo" class="main-logo">
+            <img src="alisan.jpeg" alt="Logo" class="main-logo">
             <h1>Etiquétame</h1>
         </div>
 
         <section class="form-card">
             <div class="input-group">
                 <label>Nombre del Producto</label>
-                <input type="text" id="prodName" placeholder="Ej: Pienso Perro 10kg">
+                <input type="text" id="prodName" placeholder="Nombre del artículo">
             </div>
 
             <div class="input-row">
@@ -36,24 +36,35 @@
 
             <div class="input-group">
                 <label>Código EAN13 (Opcional)</label>
-                <input type="text" id="prodEan" maxlength="13" placeholder="Dejar vacío si no tiene">
+                <input type="text" id="prodEan" maxlength="13" placeholder="13 dígitos">
             </div>
 
-            <div class="input-group">
-                <label>Tamaño Etiqueta</label>
-                <select id="labelSize">
-                    <option value="60x30">60 x 30 mm (Estándar)</option>
-                    <option value="70x37">70 x 37 mm</option>
-                    <option value="105x48">105 x 48 mm</option>
+            <div class="input-group size-selector-box">
+                <label>Medidas de Etiqueta (mm)</label>
+                <select id="labelPreset" onchange="updateInputs()">
+                    <option value="60x30">Estándar (60 x 30 mm)</option>
+                    <option value="70x37">Grande (70 x 37 mm)</option>
+                    <option value="105x48">Ancha (105 x 48 mm)</option>
+                    <option value="custom">-- Medida Personalizada --</option>
                 </select>
+                <div class="input-row custom-inputs">
+                    <div>
+                        <span>Ancho</span>
+                        <input type="number" id="customWidth" value="60">
+                    </div>
+                    <div>
+                        <span>Alto</span>
+                        <input type="number" id="customHeight" value="30">
+                    </div>
+                </div>
             </div>
 
-            <button onclick="addLabels()" class="btn-add">Añadir a la Hoja ↓</button>
+            <button onclick="addLabels()" class="btn-add">AÑADIR A LA HOJA</button>
         </section>
 
         <div class="bottom-actions">
-            <button onclick="window.print()" class="btn-print-large">🖨️ IMPRIMIR HOJA A4</button>
-            <button onclick="clearSheet()" class="btn-clear-large">Vaciar toda la hoja</button>
+            <button onclick="window.print()" class="btn-print-large">🖨️ IMPRIMIR A4</button>
+            <button onclick="clearSheet()" class="btn-clear-large">Vaciar Hoja</button>
         </div>
 
         <footer>
@@ -61,16 +72,16 @@
         </footer>
     </aside>
 
-    <!-- Panel Derecho: Vista Previa (Esto es lo que se imprime) -->
+    <!-- Panel Derecho (Vista previa / Impresión) -->
     <main class="preview-area">
         <div class="preview-header no-print">
-            <h2>Vista Previa de Impresión</h2>
-            <p>Las etiquetas aparecerán aquí. Haz clic en una para borrarla.</p>
+            <h2>Vista Previa de la Hoja A4</h2>
+            <p>Haz clic en una etiqueta para borrarla</p>
         </div>
         
         <div class="a4-page">
             <div id="printArea" class="print-grid">
-                <!-- Etiquetas generadas dinámicamente -->
+                <!-- Aquí aparecerán las etiquetas -->
             </div>
         </div>
     </main>

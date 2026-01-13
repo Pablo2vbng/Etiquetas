@@ -1,10 +1,10 @@
 document.getElementById('year').textContent = new Date().getFullYear();
 
-let labels = [];
+let labelsData = [];
 
-// Función para cuando el usuario elige un tamaño del menú desplegable
-function updateFromPresets() {
-    const preset = document.getElementById('labelSize').value;
+// Actualiza los cuadros de texto cuando eliges una medida estándar
+function updateInputs() {
+    const preset = document.getElementById('labelPreset').value;
     if (preset !== "custom") {
         const [w, h] = preset.split('x');
         document.getElementById('customWidth').value = w;
@@ -15,33 +15,31 @@ function updateFromPresets() {
 function addLabels() {
     const name = document.getElementById('prodName').value;
     const price = document.getElementById('prodPrice').value;
-    const ean = document.getElementById('prodEan').value;
-    
-    // Obtenemos las medidas directamente de los cuadros de texto
-    const width = document.getElementById('customWidth').value;
-    const height = document.getElementById('customHeight').value;
-    
+    const ean = document.getElementById('prodEan').value.trim();
     const qty = parseInt(document.getElementById('prodQty').value);
+    const w = document.getElementById('customWidth').value;
+    const h = document.getElementById('customHeight').value;
 
-    if (!name || !price || !width || !height) {
-        alert("Por favor, rellena Nombre, Precio y las Medidas.");
+    if (!name || !price || !w || !h) {
+        alert("Por favor rellena Nombre, Precio y Medidas.");
         return;
     }
 
+    // Crear las etiquetas según la cantidad
     for (let i = 0; i < qty; i++) {
-        labels.push({
+        labelsData.push({
             id: Date.now() + Math.random(),
-            name,
-            price,
-            ean: ean.trim(),
-            width: width,
-            height: height
+            name: name,
+            price: price,
+            ean: ean,
+            width: w,
+            height: h
         });
     }
 
-    renderLabels();
-
-    // Limpiar campos básicos
+    renderSheet();
+    
+    // Limpiar campos para el siguiente producto
     document.getElementById('prodName').value = "";
     document.getElementById('prodPrice').value = "";
     document.getElementById('prodEan').value = "";
@@ -49,55 +47,54 @@ function addLabels() {
 }
 
 function removeLabel(id) {
-    labels = labels.filter(l => l.id !== id);
-    renderLabels();
+    labelsData = labelsData.filter(item => item.id !== id);
+    renderSheet();
 }
 
 function clearSheet() {
-    if (confirm("¿Seguro que quieres borrar todas las etiquetas de la hoja?")) {
-        labels = [];
-        renderLabels();
+    if (confirm("¿Vaciar toda la hoja?")) {
+        labelsData = [];
+        renderSheet();
     }
 }
 
-function renderLabels() {
+function renderSheet() {
     const container = document.getElementById('printArea');
     container.innerHTML = "";
 
-    labels.forEach(item => {
+    labelsData.forEach(item => {
         const hasEan = item.ean !== "";
-        
         const labelDiv = document.createElement('div');
         labelDiv.className = `label-item ${hasEan ? '' : 'no-ean'}`;
         
-        // Aplicamos la medida personalizada que guardamos
+        // Aplicamos medidas
         labelDiv.style.width = item.width + "mm";
         labelDiv.style.height = item.height + "mm";
         labelDiv.onclick = () => removeLabel(item.id);
 
         labelDiv.innerHTML = `
             <div class="label-header">
-                <img src="alisan.jpg" class="label-logo" onerror="this.style.display='none'">
+                <img src="alisan.jpeg" class="label-logo-img" onerror="this.style.display='none'">
                 <p class="label-price">${parseFloat(item.price).toFixed(2)}€</p>
             </div>
             <div class="label-name">${item.name}</div>
-            ${hasEan ? `<div class="barcode-container"><svg id="ean-${Math.floor(item.id * 1000)}"></svg></div>` : ''}
+            ${hasEan ? `<div class="barcode-box"><svg id="barcode-${Math.floor(item.id * 1000)}"></svg></div>` : ''}
         `;
 
         container.appendChild(labelDiv);
 
         if (hasEan) {
             try {
-                JsBarcode(`#ean-${Math.floor(item.id * 1000)}`, item.ean, {
+                JsBarcode(`#barcode-${Math.floor(item.id * 1000)}`, item.ean, {
                     format: "EAN13",
                     width: 1.2,
-                    height: 35,
-                    displayValue: true,
+                    height: 30,
                     fontSize: 12,
-                    margin: 0
+                    margin: 0,
+                    displayValue: true
                 });
             } catch (e) {
-                console.error("Código EAN no válido");
+                console.log("EAN no válido");
             }
         }
     });
