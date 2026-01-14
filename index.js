@@ -20,7 +20,7 @@ function addLabels() {
     const h = document.getElementById('customHeight').value;
 
     if (!name || !priceInput) {
-        alert("Introduce al menos Nombre y Precio.");
+        alert("Introduce Nombre y Precio.");
         return;
     }
 
@@ -39,6 +39,7 @@ function addLabels() {
 
     renderSheet();
     
+    // Resetear
     document.getElementById('prodName').value = "";
     document.getElementById('prodPrice').value = "";
     document.getElementById('prodEan').value = "";
@@ -52,7 +53,7 @@ function removeLabel(id) {
 }
 
 function clearSheet() {
-    if (confirm("¿Vaciar la hoja?")) {
+    if (confirm("¿Vaciar toda la hoja?")) {
         labelsData = [];
         renderSheet();
     }
@@ -65,8 +66,9 @@ function renderSheet() {
     labelsData.forEach(item => {
         const hasEan = item.ean !== "";
         const labelDiv = document.createElement('div');
-        labelDiv.className = `label-item ${hasEan ? 'has-ean' : ''}`;
+        labelDiv.className = `label-item`;
         
+        // Aplicamos las medidas exactas
         labelDiv.style.width = item.width + "mm";
         labelDiv.style.height = item.height + "mm";
         labelDiv.onclick = () => removeLabel(item.id);
@@ -74,14 +76,14 @@ function renderSheet() {
         const [entero, decimal] = item.price.split('.');
 
         labelDiv.innerHTML = `
-            <div class="section-top">
-                <img src="alisan.jpeg" class="logo-small" onerror="this.style.display='none'">
-                <div class="name-box">${item.name}</div>
+            <div class="section-name">
+                <img src="alisan.jpeg" class="logo-label" onerror="this.style.display='none'">
+                <div class="name-label">${item.name}</div>
             </div>
-            <div class="section-bottom">
-                <div class="price-box">${entero},${decimal}<span>€</span></div>
+            <div class="section-price">
+                <div class="price-text">${entero},${decimal}<span>€</span></div>
+                ${hasEan ? `<div class="ean-label"><svg id="barcode-${Math.floor(item.id * 1000)}"></svg></div>` : ''}
             </div>
-            ${hasEan ? `<div class="ean-box"><svg id="barcode-${Math.floor(item.id * 1000)}"></svg></div>` : ''}
         `;
 
         container.appendChild(labelDiv);
@@ -90,9 +92,9 @@ function renderSheet() {
             try {
                 JsBarcode(`#barcode-${Math.floor(item.id * 1000)}`, item.ean, {
                     format: "EAN13",
-                    width: 1.4,
-                    height: 25,
-                    fontSize: 12,
+                    width: 1.2,
+                    height: 20,
+                    fontSize: 10,
                     margin: 0,
                     displayValue: true
                 });

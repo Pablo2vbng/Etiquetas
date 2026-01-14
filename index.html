@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Etiquétame - Panel de Control</title>
+    <title>Etiquétame - Impresión A4</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 </head>
 <body>
 
 <div class="app-container">
+    <!-- BARRA LATERAL (Panel de control) -->
     <aside class="sidebar no-print">
         <div class="brand">
             <img src="alisan.jpeg" alt="Logo" class="main-logo">
-            <h1>Alicia la tía buena etiqueta cosas</h1>
+            <h1>Etiquétame</h1>
         </div>
 
         <section class="form-card">
@@ -47,8 +48,8 @@
                     <option value="custom">-- Personalizada --</option>
                 </select>
                 <div class="input-row custom-inputs">
-                    <input type="number" id="customWidth" value="60" title="Ancho">
-                    <input type="number" id="customHeight" value="30" title="Alto">
+                    <input type="number" id="customWidth" value="60">
+                    <input type="number" id="customHeight" value="30">
                 </div>
             </div>
 
@@ -65,10 +66,11 @@
         </footer>
     </aside>
 
+    <!-- ÁREA DE VISTA PREVIA -->
     <main class="preview-area">
         <div class="preview-header no-print">
-            <h2>Vista Previa A4</h2>
-            <p>Pasa el ratón sobre una etiqueta para borrarla.</p>
+            <h2>Vista Previa de Impresión</h2>
+            <p>Haz clic sobre una etiqueta para borrarla.</p>
         </div>
         
         <div class="a4-page">
