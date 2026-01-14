@@ -2,7 +2,6 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 let labelsData = [];
 
-// Actualizar medidas según el preajuste seleccionado
 function updateInputs() {
     const preset = document.getElementById('labelPreset').value;
     if (preset !== "custom") {
@@ -12,25 +11,26 @@ function updateInputs() {
     }
 }
 
-// Añadir una o varias etiquetas
 function addLabels() {
     const name = document.getElementById('prodName').value;
-    const price = document.getElementById('prodPrice').value;
+    const priceInput = document.getElementById('prodPrice').value;
     const ean = document.getElementById('prodEan').value.trim();
     const qty = parseInt(document.getElementById('prodQty').value);
     const w = document.getElementById('customWidth').value;
     const h = document.getElementById('customHeight').value;
 
-    if (!name || !price || !w || !h) {
+    if (!name || !priceInput || !w || !h) {
         alert("Rellena Nombre, Precio y Medidas.");
         return;
     }
+
+    const priceFormatted = parseFloat(priceInput).toFixed(2);
 
     for (let i = 0; i < qty; i++) {
         labelsData.push({
             id: Date.now() + Math.random(),
             name: name,
-            price: price,
+            price: priceFormatted,
             ean: ean,
             width: w,
             height: h
@@ -39,7 +39,6 @@ function addLabels() {
 
     renderSheet();
     
-    // Limpiar campos y volver al nombre
     document.getElementById('prodName').value = "";
     document.getElementById('prodPrice').value = "";
     document.getElementById('prodEan').value = "";
@@ -72,10 +71,13 @@ function renderSheet() {
         labelDiv.style.height = item.height + "mm";
         labelDiv.onclick = () => removeLabel(item.id);
 
+        // Separamos el precio para hacer el símbolo € más pequeño
+        const [entero, decimal] = item.price.split('.');
+
         labelDiv.innerHTML = `
             <div class="label-header">
                 <img src="alisan.jpeg" class="label-logo-img" onerror="this.style.visibility='hidden'">
-                <p class="label-price">${parseFloat(item.price).toFixed(2)}€</p>
+                <p class="label-price">${entero},${decimal}<span>€</span></p>
             </div>
             <div class="label-name">${item.name}</div>
             ${hasEan ? `<div class="barcode-box"><svg id="barcode-${Math.floor(item.id * 1000)}"></svg></div>` : ''}
