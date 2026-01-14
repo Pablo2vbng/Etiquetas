@@ -1,5 +1,4 @@
 document.getElementById('year').textContent = new Date().getFullYear();
-
 let labelsData = [];
 
 function updateInputs() {
@@ -20,7 +19,7 @@ function addLabels() {
     const h = document.getElementById('customHeight').value;
 
     if (!name || !priceInput) {
-        alert("Introduce Nombre y Precio.");
+        alert("Faltan datos.");
         return;
     }
 
@@ -38,13 +37,10 @@ function addLabels() {
     }
 
     renderSheet();
-    
-    // Resetear
     document.getElementById('prodName').value = "";
     document.getElementById('prodPrice').value = "";
     document.getElementById('prodEan').value = "";
     document.getElementById('prodQty').value = "1";
-    document.getElementById('prodName').focus();
 }
 
 function removeLabel(id) {
@@ -53,7 +49,7 @@ function removeLabel(id) {
 }
 
 function clearSheet() {
-    if (confirm("¿Vaciar toda la hoja?")) {
+    if (confirm("¿Vaciar hoja?")) {
         labelsData = [];
         renderSheet();
     }
@@ -67,8 +63,6 @@ function renderSheet() {
         const hasEan = item.ean !== "";
         const labelDiv = document.createElement('div');
         labelDiv.className = `label-item`;
-        
-        // Aplicamos las medidas exactas
         labelDiv.style.width = item.width + "mm";
         labelDiv.style.height = item.height + "mm";
         labelDiv.onclick = () => removeLabel(item.id);
@@ -98,9 +92,7 @@ function renderSheet() {
                     margin: 0,
                     displayValue: true
                 });
-            } catch (e) {
-                console.log("EAN inválido");
-            }
+            } catch (e) { console.log("EAN error"); }
         }
     });
 }

@@ -11,7 +11,6 @@ body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: 
 
 .app-container { display: flex; min-height: 100vh; }
 
-/* SIDEBAR */
 .sidebar {
     width: 350px; background: var(--sidebar); border-right: 1px solid var(--border);
     padding: 20px; display: flex; flex-direction: column; position: fixed;
@@ -42,23 +41,24 @@ input, select { width: 100%; padding: 10px; border: 1px solid var(--border); bor
     border: 1px solid #dc3545; border-radius: 8px; margin-top: 10px; cursor: pointer;
 }
 
-/* PREVIEW */
 .preview-area { margin-left: 350px; flex-grow: 1; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+
+/* La página A4 en pantalla */
 .a4-page { 
     background: white; 
     width: 210mm; 
     min-height: 297mm; 
     padding: 10mm; 
     box-shadow: 0 0 20px rgba(0,0,0,0.1); 
-    transform: scale(0.85); /* Escala solo visual en pantalla */
+    transform: scale(0.8); /* Solo para verla entera en el PC */
     transform-origin: top center;
 }
 
 .print-grid { display: flex; flex-wrap: wrap; gap: 0; }
 
-/* --- ETIQUETA REESTRUCTURADA (60/40) --- */
+/* LA ETIQUETA */
 .label-item {
-    border: 0.1mm solid #eee;
+    border: 0.1mm solid #ddd;
     display: flex;
     flex-direction: column;
     cursor: pointer;
@@ -71,7 +71,7 @@ input, select { width: 100%; padding: 10px; border: 1px solid var(--border); bor
 .label-item:hover::after {
     content: "✕ ELIMINAR"; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(220, 53, 69, 0.9); color: white; font-size: 14px; font-weight: bold;
-    display: flex; align-items: center; justify-content: center;
+    display: flex; align-items: center; justify-content: center; z-index: 10;
 }
 
 /* 60% Nombre y Logo */
@@ -80,7 +80,7 @@ input, select { width: 100%; padding: 10px; border: 1px solid var(--border); bor
     display: flex;
     align-items: center;
     padding: 1mm 2mm;
-    border-bottom: 0.2mm solid #f1f1f1;
+    border-bottom: 0.1mm solid #eee;
 }
 
 .logo-label { height: 100%; max-height: 12mm; width: auto; object-fit: contain; }
@@ -88,14 +88,14 @@ input, select { width: 100%; padding: 10px; border: 1px solid var(--border); bor
 .name-label {
     flex: 1;
     margin-left: 2mm;
-    font-size: 9pt; /* FIJO A 9PT como pediste */
+    font-size: 9pt; /* TU TAMAÑO */
     font-weight: 700;
     text-transform: uppercase;
     line-height: 1.1;
-    color: #212529;
+    color: #000;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 3; /* AHORA 3 LÍNEAS */
     -webkit-box-orient: vertical;
 }
 
@@ -110,15 +110,15 @@ input, select { width: 100%; padding: 10px; border: 1px solid var(--border); bor
 }
 
 .price-text {
-    font-size: 28pt; /* Grande y claro */
+    font-size: 26pt; 
     font-weight: 900;
-    color: var(--accent); /* VERDE */
+    color: var(--accent);
     font-family: 'Arial Black', sans-serif;
     line-height: 1;
 }
 .price-text span { font-size: 12pt; margin-left: 0.5mm; }
 
-/* Código de barras (Absoluto al final para no romper el 60/40) */
+/* EAN */
 .ean-label {
     position: absolute;
     bottom: 0;
@@ -131,23 +131,18 @@ input, select { width: 100%; padding: 10px; border: 1px solid var(--border); bor
 }
 .ean-label svg { height: 6mm !important; max-width: 95%; }
 
-footer { margin-top: 20px; font-size: 0.75rem; color: #adb5bd; text-align: center; padding-top: 15px; }
-
-/* --- AJUSTES DE IMPRESIÓN CRÍTICOS --- */
+/* --- IMPRESIÓN --- */
 @media print {
     .no-print { display: none !important; }
-    body, html { background: white; margin: 0; padding: 0; width: 210mm; }
-    
-    .preview-area { margin: 0; padding: 0; display: block; }
-    
+    body, html { background: white; margin: 0; padding: 0; }
+    .preview-area { margin: 0; padding: 0; }
     .a4-page { 
-        transform: none !important; /* QUITAR ESCALA PARA IMPRIMIR */
+        transform: none !important; 
         box-shadow: none !important; 
         margin: 0 !important; 
-        padding: 10mm !important; /* Margen físico del folio */
+        padding: 10mm !important;
         width: 210mm !important;
     }
-
-    .label-item { border: 0.1mm solid #ddd; } /* Línea fina de corte */
+    .label-item { border: 0.1mm solid #ccc; }
     @page { size: A4; margin: 0; }
 }
