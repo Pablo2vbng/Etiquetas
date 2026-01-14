@@ -10,7 +10,6 @@
 <body>
 
 <div class="app-container">
-    <!-- PANEL DE CONTROL -->
     <aside class="sidebar no-print">
         <div class="brand">
             <img src="alisan.jpeg" alt="Logo" class="main-logo">
@@ -39,8 +38,8 @@
                 <input type="text" id="prodEan" maxlength="13" placeholder="8412345678901">
             </div>
 
-            <div class="input-group size-selector-box">
-                <label>Medidas de Etiqueta (mm)</label>
+            <div class="input-group">
+                <label>Medidas (mm)</label>
                 <select id="labelPreset" onchange="updateInputs()">
                     <option value="60x30">Estándar (60 x 30 mm)</option>
                     <option value="70x37">Grande (70 x 37 mm)</option>
@@ -48,23 +47,17 @@
                     <option value="custom">-- Medida Personalizada --</option>
                 </select>
                 <div class="input-row custom-inputs">
-                    <div>
-                        <span>Ancho</span>
-                        <input type="number" id="customWidth" value="60">
-                    </div>
-                    <div>
-                        <span>Alto</span>
-                        <input type="number" id="customHeight" value="30">
-                    </div>
+                    <input type="number" id="customWidth" value="60" title="Ancho">
+                    <input type="number" id="customHeight" value="30" title="Alto">
                 </div>
             </div>
 
-            <button onclick="addLabels()" class="btn-add">AÑADIR A LA HOJA ↓</button>
+            <button onclick="addLabels()" class="btn-add">AÑADIR A LA HOJA</button>
         </section>
 
         <div class="bottom-actions">
-            <button onclick="window.print()" class="btn-print-large">🖨️ IMPRIMIR HOJA A4</button>
-            <button onclick="clearSheet()" class="btn-clear-large">Vaciar toda la hoja</button>
+            <button onclick="window.print()" class="btn-print-large">🖨️ IMPRIMIR A4</button>
+            <button onclick="clearSheet()" class="btn-clear-large">Borrar Todo</button>
         </div>
 
         <footer>
@@ -72,17 +65,14 @@
         </footer>
     </aside>
 
-    <!-- VISTA PREVIA -->
     <main class="preview-area">
         <div class="preview-header no-print">
             <h2>Vista Previa de Impresión</h2>
-            <p>El precio se ha maximizado para una lectura rápida.</p>
+            <p>Haz clic en una etiqueta para eliminarla.</p>
         </div>
         
         <div class="a4-page">
-            <div id="printArea" class="print-grid">
-                <!-- Etiquetas dinámicas -->
-            </div>
+            <div id="printArea" class="print-grid"></div>
         </div>
     </main>
 </div>

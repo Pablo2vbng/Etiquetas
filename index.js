@@ -20,7 +20,7 @@ function addLabels() {
     const h = document.getElementById('customHeight').value;
 
     if (!name || !priceInput || !w || !h) {
-        alert("Rellena los campos obligatorios.");
+        alert("Rellena los datos básicos.");
         return;
     }
 
@@ -39,7 +39,6 @@ function addLabels() {
 
     renderSheet();
     
-    // Resetear formulario
     document.getElementById('prodName').value = "";
     document.getElementById('prodPrice').value = "";
     document.getElementById('prodEan').value = "";
@@ -53,7 +52,7 @@ function removeLabel(id) {
 }
 
 function clearSheet() {
-    if (confirm("¿Vaciar toda la hoja?")) {
+    if (confirm("¿Vaciar la hoja?")) {
         labelsData = [];
         renderSheet();
     }
@@ -91,14 +90,14 @@ function renderSheet() {
             try {
                 JsBarcode(`#barcode-${Math.floor(item.id * 1000)}`, item.ean, {
                     format: "EAN13",
-                    width: 1.5,
-                    height: 25, // Código de barras más bajito para dar espacio al precio
-                    fontSize: 12,
+                    width: 1.3,
+                    height: 25,
+                    fontSize: 10,
                     margin: 0,
                     displayValue: true
                 });
             } catch (e) {
-                console.log("EAN inválido");
+                console.log("EAN error");
             }
         }
     });
