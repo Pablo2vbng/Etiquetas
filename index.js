@@ -20,7 +20,7 @@ function addLabels() {
     const h = document.getElementById('customHeight').value;
 
     if (!name || !priceInput || !w || !h) {
-        alert("Rellena Nombre, Precio y Medidas.");
+        alert("Rellena los campos obligatorios.");
         return;
     }
 
@@ -39,6 +39,7 @@ function addLabels() {
 
     renderSheet();
     
+    // Resetear formulario
     document.getElementById('prodName').value = "";
     document.getElementById('prodPrice').value = "";
     document.getElementById('prodEan').value = "";
@@ -71,15 +72,16 @@ function renderSheet() {
         labelDiv.style.height = item.height + "mm";
         labelDiv.onclick = () => removeLabel(item.id);
 
-        // Separamos el precio para hacer el símbolo € más pequeño
         const [entero, decimal] = item.price.split('.');
 
         labelDiv.innerHTML = `
             <div class="label-header">
-                <img src="alisan.jpeg" class="label-logo-img" onerror="this.style.visibility='hidden'">
+                <img src="alisan.jpeg" class="label-logo-img" onerror="this.style.display='none'">
+                <div class="label-name">${item.name}</div>
+            </div>
+            <div class="price-block">
                 <p class="label-price">${entero},${decimal}<span>€</span></p>
             </div>
-            <div class="label-name">${item.name}</div>
             ${hasEan ? `<div class="barcode-box"><svg id="barcode-${Math.floor(item.id * 1000)}"></svg></div>` : ''}
         `;
 
@@ -89,8 +91,8 @@ function renderSheet() {
             try {
                 JsBarcode(`#barcode-${Math.floor(item.id * 1000)}`, item.ean, {
                     format: "EAN13",
-                    width: 1.4,
-                    height: 35,
+                    width: 1.5,
+                    height: 25, // Código de barras más bajito para dar espacio al precio
                     fontSize: 12,
                     margin: 0,
                     displayValue: true

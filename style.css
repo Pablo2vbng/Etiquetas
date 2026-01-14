@@ -1,14 +1,14 @@
 :root {
     --bg-app: #f4f7f6;
     --sidebar: #ffffff;
-    --primary: #2c3e50;
-    --accent: #27ae60;
+    --primary: #1a1a1a;
+    --accent: #27ae60; /* Verde precio */
     --danger: #e74c3c;
     --border: #dcdde1;
 }
 
 * { box-sizing: border-box; }
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--bg-app); color: #333; }
+body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: var(--bg-app); color: #333; }
 
 .app-container { display: flex; min-height: 100vh; }
 
@@ -19,7 +19,7 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; 
 }
 
 .brand { text-align: center; margin-bottom: 20px; }
-.main-logo { max-width: 90px; margin-bottom: 5px; }
+.main-logo { max-width: 80px; margin-bottom: 5px; }
 .brand h1 { font-size: 1.6rem; margin: 0; color: var(--primary); letter-spacing: -1px; }
 
 .form-card { flex-grow: 1; }
@@ -39,7 +39,7 @@ input, select {
     width: 100%; padding: 16px; background: var(--primary); color: white;
     border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s;
 }
-.btn-add:hover { background: #1a252f; }
+.btn-add:hover { background: #000; }
 
 .btn-print-large {
     width: 100%; padding: 20px; background: var(--accent); color: white;
@@ -64,20 +64,20 @@ input, select {
 
 .print-grid { display: flex; flex-wrap: wrap; gap: 1.5mm; align-content: flex-start; }
 
-/* LA ETIQUETA */
+/* LA ETIQUETA - REDISEÑO PARA PRECIO GIGANTE */
 .label-item {
     border: 0.1mm solid #f0f0f0;
-    padding: 2mm 3mm;
+    padding: 1.5mm 2.5mm;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     cursor: pointer;
     background: white;
     overflow: hidden;
     position: relative;
 }
 
-/* Efecto Eliminar */
+/* Efecto Eliminar visual */
 .label-item::after {
     content: "✕"; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(231, 76, 60, 0.9); color: white; font-size: 40px;
@@ -85,36 +85,51 @@ input, select {
 }
 .label-item:hover::after { opacity: 1; }
 
+/* Cabecera minúscula para dejar espacio al precio */
 .label-header { 
-    display: flex; justify-content: space-between; align-items: flex-end; 
-    border-bottom: 1px solid #eee; padding-bottom: 0.5mm;
+    display: flex; justify-content: space-between; align-items: center; 
+    height: 6mm; margin-bottom: 0.5mm;
 }
-
-.label-logo-img { height: 9mm; max-width: 30%; object-fit: contain; }
-
-/* PRECIO GIGANTE */
-.label-price { 
-    font-size: 42pt; /* Tamaño extremo */
-    font-weight: 900; color: var(--accent); 
-    margin: 0; line-height: 0.8; letter-spacing: -2.5px;
-    font-family: 'Arial Black', sans-serif;
-}
-.label-price span { font-size: 18pt; letter-spacing: 0; margin-left: 1mm; }
-
+.label-logo-img { height: 6mm; max-width: 25%; object-fit: contain; }
 .label-name { 
-    font-size: 10.5pt; font-weight: 800; text-transform: uppercase; 
-    margin: 1.5mm 0; line-height: 1; overflow: hidden;
+    font-size: 9pt; font-weight: 700; text-transform: uppercase; 
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    flex-grow: 1; margin-left: 2mm;
 }
 
-.barcode-box { text-align: center; margin-top: auto; }
-.barcode-box svg { max-width: 100%; height: auto !important; }
-
-/* Sin EAN: Precio y Nombre aún más grandes */
-.no-ean .label-name {
-    flex-grow: 1; display: flex; align-items: center;
-    font-size: 15pt; text-align: center; justify-content: center;
+/* BLOQUE CENTRAL DE PRECIO - EL MÁS GRANDE POSIBLE */
+.price-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    margin-top: -1mm;
 }
-.no-ean .label-price { font-size: 52pt; }
+
+.label-price { 
+    font-size: 55pt; /* TAMAÑO MONSTRUOSO */
+    font-weight: 900; 
+    color: var(--accent); 
+    margin: 0; 
+    line-height: 0.75; 
+    letter-spacing: -3.5px;
+    font-family: 'Arial Black', Gadget, sans-serif;
+}
+
+.label-price span { 
+    font-size: 16pt; 
+    letter-spacing: 0; 
+    vertical-align: super;
+    margin-left: 0.5mm;
+}
+
+/* Código de barras reducido al mínimo alto para no estorbar */
+.barcode-box { text-align: center; margin-top: auto; height: 8mm; }
+.barcode-box svg { width: 100%; height: 8mm !important; }
+
+/* Sin EAN: Precio ocupa todo */
+.no-ean .label-price { font-size: 70pt; }
+.no-ean .price-block { margin-top: 1mm; }
 
 footer { margin-top: 20px; font-size: 0.75rem; color: #888; text-align: center; border-top: 1px solid #eee; padding-top: 15px; }
 
