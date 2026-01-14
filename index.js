@@ -19,8 +19,8 @@ function addLabels() {
     const w = document.getElementById('customWidth').value;
     const h = document.getElementById('customHeight').value;
 
-    if (!name || !priceInput || !w || !h) {
-        alert("Rellena los datos básicos.");
+    if (!name || !priceInput) {
+        alert("Introduce al menos Nombre y Precio.");
         return;
     }
 
@@ -65,7 +65,7 @@ function renderSheet() {
     labelsData.forEach(item => {
         const hasEan = item.ean !== "";
         const labelDiv = document.createElement('div');
-        labelDiv.className = `label-item ${hasEan ? '' : 'no-ean'}`;
+        labelDiv.className = `label-item ${hasEan ? 'has-ean' : ''}`;
         
         labelDiv.style.width = item.width + "mm";
         labelDiv.style.height = item.height + "mm";
@@ -74,14 +74,14 @@ function renderSheet() {
         const [entero, decimal] = item.price.split('.');
 
         labelDiv.innerHTML = `
-            <div class="label-header">
-                <img src="alisan.jpeg" class="label-logo-img" onerror="this.style.display='none'">
-                <div class="label-name">${item.name}</div>
+            <div class="section-top">
+                <img src="alisan.jpeg" class="logo-small" onerror="this.style.display='none'">
+                <div class="name-box">${item.name}</div>
             </div>
-            <div class="price-block">
-                <p class="label-price">${entero},${decimal}<span>€</span></p>
+            <div class="section-bottom">
+                <div class="price-box">${entero},${decimal}<span>€</span></div>
             </div>
-            ${hasEan ? `<div class="barcode-box"><svg id="barcode-${Math.floor(item.id * 1000)}"></svg></div>` : ''}
+            ${hasEan ? `<div class="ean-box"><svg id="barcode-${Math.floor(item.id * 1000)}"></svg></div>` : ''}
         `;
 
         container.appendChild(labelDiv);
@@ -90,14 +90,14 @@ function renderSheet() {
             try {
                 JsBarcode(`#barcode-${Math.floor(item.id * 1000)}`, item.ean, {
                     format: "EAN13",
-                    width: 1.3,
+                    width: 1.4,
                     height: 25,
-                    fontSize: 10,
+                    fontSize: 12,
                     margin: 0,
                     displayValue: true
                 });
             } catch (e) {
-                console.log("EAN error");
+                console.log("EAN inválido");
             }
         }
     });
