@@ -2,7 +2,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 let labelsData = [];
 
-// Actualiza los cuadros de texto cuando eliges una medida estándar
+// Actualizar medidas según el preajuste seleccionado
 function updateInputs() {
     const preset = document.getElementById('labelPreset').value;
     if (preset !== "custom") {
@@ -12,6 +12,7 @@ function updateInputs() {
     }
 }
 
+// Añadir una o varias etiquetas
 function addLabels() {
     const name = document.getElementById('prodName').value;
     const price = document.getElementById('prodPrice').value;
@@ -21,11 +22,10 @@ function addLabels() {
     const h = document.getElementById('customHeight').value;
 
     if (!name || !price || !w || !h) {
-        alert("Por favor rellena Nombre, Precio y Medidas.");
+        alert("Rellena Nombre, Precio y Medidas.");
         return;
     }
 
-    // Crear las etiquetas según la cantidad
     for (let i = 0; i < qty; i++) {
         labelsData.push({
             id: Date.now() + Math.random(),
@@ -39,11 +39,12 @@ function addLabels() {
 
     renderSheet();
     
-    // Limpiar campos para el siguiente producto
+    // Limpiar campos y volver al nombre
     document.getElementById('prodName').value = "";
     document.getElementById('prodPrice').value = "";
     document.getElementById('prodEan').value = "";
     document.getElementById('prodQty').value = "1";
+    document.getElementById('prodName').focus();
 }
 
 function removeLabel(id) {
@@ -67,14 +68,13 @@ function renderSheet() {
         const labelDiv = document.createElement('div');
         labelDiv.className = `label-item ${hasEan ? '' : 'no-ean'}`;
         
-        // Aplicamos medidas
         labelDiv.style.width = item.width + "mm";
         labelDiv.style.height = item.height + "mm";
         labelDiv.onclick = () => removeLabel(item.id);
 
         labelDiv.innerHTML = `
             <div class="label-header">
-                <img src="alisan.jpeg" class="label-logo-img" onerror="this.style.display='none'">
+                <img src="alisan.jpeg" class="label-logo-img" onerror="this.style.visibility='hidden'">
                 <p class="label-price">${parseFloat(item.price).toFixed(2)}€</p>
             </div>
             <div class="label-name">${item.name}</div>
@@ -87,14 +87,14 @@ function renderSheet() {
             try {
                 JsBarcode(`#barcode-${Math.floor(item.id * 1000)}`, item.ean, {
                     format: "EAN13",
-                    width: 1.2,
-                    height: 30,
+                    width: 1.4,
+                    height: 35,
                     fontSize: 12,
                     margin: 0,
                     displayValue: true
                 });
             } catch (e) {
-                console.log("EAN no válido");
+                console.log("EAN inválido");
             }
         }
     });
