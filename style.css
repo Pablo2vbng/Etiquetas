@@ -68,7 +68,7 @@ input, select { width: 100%; padding: 10px; border: 1px solid var(--border); bor
 
 /* 50% SUPERIOR: Logo y Nombre */
 .section-top {
-    height: 50%;
+    height: 60%;
     display: flex;
     align-items: center;
     border-bottom: 1px solid #f1f5f9;
@@ -79,7 +79,7 @@ input, select { width: 100%; padding: 10px; border: 1px solid var(--border); bor
 .name-box {
     flex: 1;
     margin-left: 2mm;
-    font-size: 13pt; /* Nombre bien visto */
+    font-size: 9pt; /* Nombre bien visto */
     font-weight: 700;
     text-transform: uppercase;
     line-height: 1;
@@ -92,7 +92,7 @@ input, select { width: 100%; padding: 10px; border: 1px solid var(--border); bor
 
 /* 50% INFERIOR: Precio */
 .section-bottom {
-    height: 50%;
+    height: 40%;
     display: flex;
     flex-direction: column;
     justify-content: center;
