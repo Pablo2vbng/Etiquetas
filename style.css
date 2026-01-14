@@ -1,7 +1,7 @@
 :root {
     --bg-app: #f4f7f6;
     --sidebar: #ffffff;
-    --primary: #1a1a1a;
+    --primary: #1a252f;
     --accent: #27ae60;
     --danger: #e74c3c;
     --border: #dcdde1;
@@ -19,17 +19,17 @@ body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: 
 }
 
 .brand { text-align: center; margin-bottom: 20px; }
-.main-logo { max-width: 70px; margin-bottom: 5px; }
+.main-logo { max-width: 80px; margin-bottom: 5px; }
 .brand h1 { font-size: 1.5rem; margin: 0; letter-spacing: -1px; }
 
 .input-group { margin-bottom: 15px; }
 .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; }
-input, select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; }
+input, select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; }
 
 .btn-add {
     width: 100%; padding: 14px; background: var(--primary); color: white;
-    border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px;
+    border: none; border-radius: 6px; font-weight: bold; cursor: pointer;
 }
 
 .btn-print-large {
@@ -39,75 +39,88 @@ input, select { width: 100%; padding: 10px; border: 1px solid var(--border); bor
 
 .btn-clear-large {
     width: 100%; padding: 8px; background: transparent; color: var(--danger);
-    border: 1px solid var(--danger); border-radius: 8px; margin-top: 10px; cursor: pointer; font-size: 0.8rem;
+    border: 1px solid var(--danger); border-radius: 8px; margin-top: 10px; cursor: pointer;
 }
 
 .preview-area { margin-left: 350px; flex-grow: 1; padding: 30px; display: flex; flex-direction: column; align-items: center; }
 .a4-page { background: white; width: 210mm; min-height: 297mm; padding: 10mm; box-shadow: 0 0 30px rgba(0,0,0,0.1); }
-.print-grid { display: flex; flex-wrap: wrap; gap: 1.5mm; }
+.print-grid { display: flex; flex-wrap: wrap; gap: 2mm; }
 
-/* LA ETIQUETA - AJUSTE DE TAMAÑO CONTROLADO */
+/* --- ETIQUETA REESTRUCTURADA --- */
 .label-item {
-    border: 0.1mm solid #f0f0f0;
-    padding: 1.5mm 2mm;
+    border: 0.1mm solid #ddd;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    padding: 1.5mm;
     cursor: pointer;
     background: white;
     overflow: hidden;
     position: relative;
 }
 
+/* Efecto Eliminar */
 .label-item::after {
     content: "✕"; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(231, 76, 60, 0.9); color: white; font-size: 30px;
-    display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.2s;
+    display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.2s; z-index: 10;
 }
 .label-item:hover::after { opacity: 1; }
 
-/* Cabecera: Logo y Nombre en una línea */
-.label-header { 
-    display: flex; justify-content: space-between; align-items: center; 
-    height: 6mm; margin-bottom: 1mm;
-}
-.label-logo-img { height: 6mm; max-width: 20%; object-fit: contain; }
-.label-name { 
-    font-size: 8.5pt; font-weight: 700; text-transform: uppercase; 
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    flex-grow: 1; margin-left: 2mm; color: #444;
-}
-
-/* PRECIO AJUSTADO - GRANDE PERO DENTRO DE LÍMITES */
-.price-block {
-    flex-grow: 1;
+/* Cuerpo superior: Info a la izquierda, Precio a la derecha */
+.label-body {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    flex-grow: 1;
+    width: 100%;
+    align-items: stretch;
+    min-height: 0; /* Evita que crezca de más */
 }
 
+/* Columna de Logo y Nombre */
+.info-col {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 1mm;
+}
+.label-logo-img { max-width: 100%; max-height: 10mm; object-fit: contain; }
+.label-name { 
+    font-size: 7.5pt; font-weight: 800; text-transform: uppercase; 
+    word-wrap: break-word; line-height: 1; margin-top: 1mm;
+}
+
+/* Columna de Precio GIGANTE */
+.price-col {
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
 .label-price { 
-    font-size: 36pt; /* Tamaño óptimo para 30mm de alto */
+    font-size: 34pt; /* Tamaño optimizado para no desbordar */
     font-weight: 900; 
     color: var(--accent); 
     margin: 0; 
-    line-height: 1; 
+    line-height: 0.8; 
     letter-spacing: -2px;
     font-family: 'Arial Black', sans-serif;
+    text-align: right;
 }
+.label-price span { font-size: 14pt; margin-left: 0.5mm; }
 
-.label-price span { 
-    font-size: 14pt; 
-    vertical-align: baseline;
-    margin-left: 0.5mm;
+/* Fila de Código de Barras */
+.barcode-row {
+    height: 8mm;
+    width: 100%;
+    margin-top: 1mm;
+    display: flex;
+    justify-content: center;
 }
+.barcode-row svg { height: 8mm !important; max-width: 100%; }
 
-.barcode-box { text-align: center; height: 7mm; display: flex; justify-content: center; }
-.barcode-box svg { height: 7mm !important; max-width: 100%; }
-
-/* Sin EAN: El precio puede crecer un poco más sin romperse */
-.no-ean .label-price { font-size: 48pt; }
+/* Ajuste cuando NO hay EAN */
+.no-ean .price-col { width: 75%; }
+.no-ean .label-price { font-size: 44pt; }
 
 footer { margin-top: 20px; font-size: 0.7rem; color: #888; text-align: center; border-top: 1px solid #eee; padding-top: 10px; }
 
@@ -116,6 +129,6 @@ footer { margin-top: 20px; font-size: 0.7rem; color: #888; text-align: center; b
     .label-item::after { display: none !important; }
     body { background: white; margin: 0; }
     .a4-page { box-shadow: none; margin: 0; padding: 10mm; }
-    .label-item { border: 0.1mm solid #ddd; }
+    .label-item { border: 0.1mm solid #bbb; }
     @page { size: A4; margin: 0; }
 }
